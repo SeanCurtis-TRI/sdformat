@@ -370,15 +370,23 @@ std::optional<gz::math::Inertiald> Geometry::CalculateInertial(
                                               _config);
       break;
     default:
-      Error invalidGeomTypeErr(
-        ErrorCode::WARNING,
-        "Automatic inertia calculations are not supported for the given"
-        " Geometry type. "
-      );
-      enforceConfigurablePolicyCondition(
-        _config.WarningsPolicy(), invalidGeomTypeErr, _errors
-      );
-      geomInertial = std::nullopt;
+      const auto &customCalculator = _config.CustomGeometryInertiaCalc();
+      if (customCalculator)
+      {
+        sdf::CustomGeometryInertiaCalcProperties calcInterface =
+          CustomGeometryInertiaCalcProperties(
+            _density, *this, _autoInertiaParams);
+
+        geomInertial = customCalculator(_errors, calcInterface);
+        if (!geomInertial.has_value()) {
+          Error invalidGeomTypeErr(
+              ErrorCode::WARNING,
+              "Automatic inertia calculations are not supported for the given"
+              " Geometry type.");
+          enforceConfigurablePolicyCondition(_config.WarningsPolicy(),
+                                             invalidGeomTypeErr, _errors);
+        }
+      }
       break;
   }
 

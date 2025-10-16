@@ -82,7 +82,53 @@ class SDFORMAT_VISIBLE CustomInertiaCalcProperties
 using CustomInertiaCalculator =
     std::function<std::optional<gz::math::Inertiald>(sdf::Errors &,
         const sdf::CustomInertiaCalcProperties &)>;
-}
+
+
+class SDFORMAT_VISIBLE CustomGeometryInertiaCalcProperties
+{
+  /// \brief Default Constructor
+  public: CustomGeometryInertiaCalcProperties();
+
+  /// \brief Constructor with mesh properties
+  /// \param[in] _density Double density value
+  /// \param[in] _geometry sdf::ElementPtr for geometry element
+  /// \param[in] _calculatorParams sdf::ElementPtr for calculator params element
+  public: CustomGeometryInertiaCalcProperties(const double _density,
+              const std::optional<sdf::Geometry> _geometry,
+              const sdf::ElementPtr _calculatorParams);
+
+  /// \brief Get the density of the mesh.
+  /// \return Double density of the mesh.
+  public: double Density() const;
+
+  /// \brief Function to set the density of the interface object
+  /// \param[in] _density Double density value
+  public: void SetDensity(double _density);
+
+  /// \brief Get the reference to the geometry element being used.
+  /// \return Reference to the sdf::ElementPtr object.
+  public: const std::optional<sdf::Geometry> &Geometry() const;
+
+  /// \brief Function to set the geometry element
+  /// \param[in] _geometry sdf::ElementPtr for geometry element
+  public: void SetGeometry(std::optional<sdf::Geometry> _geometry);
+
+  /// \brief Get the reference to the <auto_inertia_params> sdf element.
+  /// User defined calculator params can be accessed through this element
+  /// \return sdf::ElementPtr for the tag
+  public: const sdf::ElementPtr AutoInertiaParams() const;
+
+  /// \brief Function to set the calculator params sdf element object
+  /// \param[in] _autoInertiaParamsElem sdf::ElementPtr for calculator params
+  public: void SetAutoInertiaParams(sdf::ElementPtr _autoInertiaParamsElem);
+
+  /// \brief Private data pointer.
+  GZ_UTILS_IMPL_PTR(dataPtr)
+};
+
+using CustomGeometryInertiaCalculator =
+    std::function<std::optional<gz::math::Inertiald>(sdf::Errors &,
+        const sdf::CustomGeometryInertiaCalcProperties &)>;}
 }
 
 #endif

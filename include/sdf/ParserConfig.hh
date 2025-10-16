@@ -239,9 +239,21 @@ class SDFORMAT_VISIBLE ParserConfig
   /// \return registered mesh MOI Calculator.
   public: const CustomInertiaCalculator &CustomInertiaCalc() const;
 
-  /// \brief Set the preserveFixedJoint flag.
-  /// \param[in] _preserveFixedJoint True to preserve fixed joints, false to
-  /// reduce the fixed joints and merge the child link into the parent.
+  /// \brief Registers a custom Moment of Inertia Calculator for unrecognized
+  /// geometry Elements.
+  /// \param[in] _inertiaCalculator Callback with signature as described in
+  /// sdf/CustomInertiaCalcProperties.hh.
+  public: void RegisterCustomGeometryInertiaCalc(
+      CustomGeometryInertiaCalculator _inertiaCalculator);
+
+  /// \brief Get the registered custom geometry MOI Calculator
+  /// \return registered geometry MOI Calculator.
+  public:
+   const CustomGeometryInertiaCalculator &CustomGeometryInertiaCalc() const;
+
+   /// \brief Set the preserveFixedJoint flag.
+   /// \param[in] _preserveFixedJoint True to preserve fixed joints, false to
+   /// reduce the fixed joints and merge the child link into the parent.
   public: void URDFSetPreserveFixedJoint(bool _preserveFixedJoint);
 
   /// \brief Get the preserveFixedJoint flag value.

@@ -61,6 +61,9 @@ class sdf::ParserConfig::Implementation
   /// \brief Collection of custom model parsers.
   public: CustomInertiaCalculator customInertiaCalculator;
 
+  /// \brief Optional inertia calculator for unknown geometry types.
+  public: CustomGeometryInertiaCalculator customGeometryInertiaCalculator;
+
   /// \brief Flag to explicitly preserve fixed joints when
   /// reading the SDF/URDF file.
   public: bool preserveFixedJoint = false;
@@ -223,6 +226,18 @@ void ParserConfig::RegisterCustomInertiaCalc(
 const CustomInertiaCalculator &ParserConfig::CustomInertiaCalc() const
 {
   return this->dataPtr->customInertiaCalculator;
+}
+
+/////////////////////////////////////////////////
+void ParserConfig::RegisterCustomGeometryInertiaCalc(
+    CustomGeometryInertiaCalculator _inertiaCalculator) {
+  this->dataPtr->customGeometryInertiaCalculator = _inertiaCalculator;
+}
+
+/////////////////////////////////////////////////
+const CustomGeometryInertiaCalculator &ParserConfig::CustomGeometryInertiaCalc()
+    const {
+  return this->dataPtr->customGeometryInertiaCalculator;
 }
 
 /////////////////////////////////////////////////

@@ -92,3 +92,67 @@ void CustomInertiaCalcProperties::SetAutoInertiaParams(
 {
   this->dataPtr->inertiaCalculatorParams = _autoInertiaParamsElem;
 }
+
+class CustomGeometryInertiaCalcProperties::Implementation {
+  /// \brief Density of the mesh. 1000 kg/m^3 by default
+ public:
+  double density{1000.0};
+
+  /// \brief The SDF geometry.
+ public:
+  std::optional<sdf::Geometry> geometry{std::nullopt};
+
+  /// \brief SDF element pointer to <auto_inertia_params> tag.
+  /// This can be used to access custom params for the
+  /// Inertia Calculator
+ public:
+  sdf::ElementPtr inertiaCalculatorParams{nullptr};
+};
+
+/////////////////////////////////////////////////
+CustomGeometryInertiaCalcProperties::CustomGeometryInertiaCalcProperties()
+    : dataPtr(gz::utils::MakeImpl<Implementation>()) {}
+
+/////////////////////////////////////////////////
+CustomGeometryInertiaCalcProperties::CustomGeometryInertiaCalcProperties(
+    const double _density, const std::optional<sdf::Geometry> _geometry,
+    const sdf::ElementPtr _calculatorParams)
+    : dataPtr(gz::utils::MakeImpl<Implementation>()) {
+  this->dataPtr->density = _density;
+  this->dataPtr->geometry = _geometry;
+  this->dataPtr->inertiaCalculatorParams = _calculatorParams;
+}
+
+/////////////////////////////////////////////////
+double CustomGeometryInertiaCalcProperties::Density() const {
+  return this->dataPtr->density;
+}
+
+/////////////////////////////////////////////////
+void CustomGeometryInertiaCalcProperties::SetDensity(double _density) {
+  this->dataPtr->density = _density;
+}
+
+/////////////////////////////////////////////////
+const std::optional<sdf::Geometry> &
+CustomGeometryInertiaCalcProperties::Geometry() const {
+  return this->dataPtr->geometry;
+}
+
+/////////////////////////////////////////////////
+void CustomGeometryInertiaCalcProperties::SetGeometry(
+    std::optional<sdf::Geometry> _geometry) {
+  this->dataPtr->geometry = _geometry;
+}
+
+/////////////////////////////////////////////////
+const sdf::ElementPtr CustomGeometryInertiaCalcProperties::AutoInertiaParams()
+    const {
+  return this->dataPtr->inertiaCalculatorParams;
+}
+
+/////////////////////////////////////////////////
+void CustomGeometryInertiaCalcProperties::SetAutoInertiaParams(
+    sdf::ElementPtr _autoInertiaParamsElem) {
+  this->dataPtr->inertiaCalculatorParams = _autoInertiaParamsElem;
+}
